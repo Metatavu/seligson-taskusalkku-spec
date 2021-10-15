@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   version: 1.0.0
-  title: Template API-spec
+  title: Taskusalkku API-spec
 
 security:
   - bearerAuth: []
@@ -22,13 +22,13 @@ paths:
               schema:
                 type: string
 
-  /v1/examples:
+  /v1/funds:
     get:
-      operationId: listExamples
-      summary: List examples.
-      description: Lists examples.
+      operationId: listFunds
+      summary: List funds.
+      description: Lists funds.
       tags:
-        - Examples
+        - Funds
       parameters:
         - name: firstResult
           in: query
@@ -41,198 +41,150 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
-          description: List of examples
+        "200":
+          description: List of funds
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Example'
+                  $ref: "#/components/schemas/Fund"
           headers:
             X-Total-Count:
               schema:
                 type: integer
                 format: int64
-              description: Total count of examples with given filters.
-        '400':
+              description: Total count of funds with given filters.
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      operationId: createExample
-      summary: Create an example.
-      description: Creates a new example.
-      tags:
-        - Examples
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Example'
-        description: Payload
-        required: true
-      responses:
-        '200':
-          description: Created Example
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Example'
-        '400':
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/examples/{exampleId}':
+  "/v1/funds/{fundId}":
     get:
-      operationId: findExample
-      summary: Find a example.
-      description: Finds a example by id.
+      operationId: findFund
+      summary: Find a fund.
+      description: Finds a fund by id.
       tags:
-        - Examples
+        - Funds
       parameters:
-        - name: exampleId
+        - name: fundId
           required: true
           in: path
-          description: example id
+          description: fund id
           schema:
             type: string
             format: uuid
       responses:
-        '200':
-          description: Example
+        "200":
+          description: Fund
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
-        '400':
+                $ref: "#/components/schemas/Fund"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      operationId: updateExample
-      summary: Update a example.
-      description: Updates a example
+                $ref: "#/components/schemas/Error"
+
+  "/v1/funds/{fundId}/historicalValues":
+    get:
+      operationId: listHistoricalValues
+      summary: Lists historical values
+      description: Lists historical values
       tags:
-        - Examples
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Example'
-        description: Payload
-        required: true
+        - Funds
       parameters:
-        - name: exampleId
+        - name: fundId
           required: true
           in: path
-          description: example id
+          description: fund id
           schema:
             type: string
             format: uuid
-      responses:
-        '200':
-          description: Updated Example
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Example'
-        '400':
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    delete:
-      operationId: deleteExample
-      summary: Delete a example.
-      description: Deletes a example.
-      tags:
-        - Examples
-      parameters:
-        - name: exampleId
-          required: true
-          in: path
-          description: example id
+        - name: firstResult
+          in: query
+          description: First result. Defaults to 0
+          schema:
+            type: integer
+        - name: maxResults
+          in: query
+          description: Max results. Defaults to 10
+          schema:
+            type: integer
+        - name: startDate
+          in: query
+          description: Filter starting from this date
           schema:
             type: string
-            format: uuid
+            format: date
+        - name: endDate
+          in: query
+          description: Filter ending to this date
+          schema:
+            type: string
+            format: date
       responses:
-        '204':
-          description: Success
-        '400':
+        "200":
+          description: List of historical values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HistoricalValue"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of funds with given filters.
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
 components:
   securitySchemes:
@@ -255,43 +207,129 @@ components:
         message:
           type: string
 
-    Example:
+    Fund:
       type: object
-      description: Example object
+      description: Fund object
       required:
         - name
-        - message
-        - amount
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
-          description: Example object id in UUID format
+          description: Fund object id in UUID format
         name:
+          $ref: "#/components/schemas/LocalizedValue"
+        longName:
+          $ref: "#/components/schemas/LocalizedValue"
+        shortName:
+          $ref: "#/components/schemas/LocalizedValue"
+        bankReceiverName:
           type: string
-          description: Example object name
-        amount:
+          description: Bank receiver name
+        group:
+          $ref: "#/components/schemas/FundGroup"
+        priceDate:
+          type: string
+          format: date
+          description: Price date
+        aShareValue:
+          description: Share value A
+          type: number
+          format: double
+        bShareValue:
+          description: Share value B
+          type: number
+          format: double
+        changeData:
+          $ref: "#/components/schemas/ChangeData"
+        profitProjection:
+          description: Profit projection
+          type: number
+          format: double
+        profitProjectionDate:
+          description: Profit projection date
+          type: string
+          format: date
+        color:
+          description: Fund color
+          type: string
+        risk:
+          description: Fund risk level
           type: integer
           format: int32
-          description: Example object amount
-        creatorId:
-          description: Id of creator
+        KIID:
+          $ref: "#/components/schemas/LocalizedValue"
+
+    LocalizedValue:
+      type: object
+      description: Object that contains localized information
+      required:
+        - fi
+        - sv
+      properties:
+        fi:
           type: string
-          format: uuid
-          readOnly: true
-        lastModifierId:
-          description: Id of last modifier
+        sv:
           type: string
-          format: uuid
-          readOnly: true
-        createdAt:
+
+    FundGroup:
+      type: string
+      description: Fund group enum
+      enum:
+        - PASSIVE
+        - ACTIVE
+        - BALANCED
+        - FIXED_INCOME
+        - DIMENSION
+        - SPILTAN
+
+    ChangeData:
+      type: object
+      description: Change data object
+      properties:
+        1dChange:
+          description: 1 day change
+          type: number
+          format: double
+        1mChange:
+          description: 1 month change
+          type: number
+          format: double
+        1yChange:
+          description: 1 year change
+          type: number
+          format: double
+        3yChange:
+          description: 3 years change
+          type: number
+          format: double
+        5yChange:
+          description: 5 years change
+          type: number
+          format: double
+        10yChange:
+          description: 10 years change
+          type: number
+          format: double
+        15yChange:
+          description: 15 years change
+          type: number
+          format: double
+        20yChange:
+          description: 20 years change
+          type: number
+          format: double
+
+    HistoricalValue:
+      type: object
+      description: Historical value object
+      properties:
+        date:
+          description: Date of historical value
           type: string
-          format: date-time
-          description: Created date
-          readOnly: true
-        modifiedAt:
-          type: string
-          format: date-time
-          description: Date modified
-          readOnly: true
+          format: date
+        value:
+          description: Historical value
+          type: number
+          format: double
