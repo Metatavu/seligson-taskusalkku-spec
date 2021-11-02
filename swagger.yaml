@@ -9,6 +9,7 @@ security:
 paths:
   /v1/system/ping:
     get:
+      security: []
       operationId: ping
       summary: Replies with pong
       description: Replies ping with pong
