@@ -186,6 +186,194 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+                
+  /v1/portfolios:
+    get:
+      operationId: listPortfolios
+      summary: List portfolios.
+      description: Lists portfolios logged user has access to
+      tags:
+        - Portfolios
+      responses:
+        "200":
+          description: List of portfolios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Portfolio"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}":
+    get:
+      operationId: findPortfolio
+      summary: Find a portfolio.
+      description: Finds a portfolio by id.
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Portfolio
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Portfolio"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/summary":
+    get:
+      operationId: getPortfolioHSummary
+      summary: Smmary for portfolio summary
+      description: Returns summary a portfolio history for given time range
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          required: true
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: true
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Portfolio
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSummary"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/historyValues":
+    get:
+      operationId: listPortfolioHistoryValues
+      summary: List portfolio history values.
+      description: Lists portfolio history values
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          required: true
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: true
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: List of portfolio history values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioHistoryValue"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   securitySchemes:
@@ -334,3 +522,56 @@ components:
           description: Historical value
           type: number
           format: double
+          
+    Portfolio:
+      type: object
+      description: Portfolio object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        totalAmount:
+          type: integer
+          format: int64
+          description: Total amount in cents
+          readOnly: true
+        marketValueTotal:
+          type: integer
+          format: int64
+          description: Market total amount in cents
+          readOnly: true
+        purchaseTotal:
+          type: integer
+          format: int64
+          description: Purchase total amount in cents
+          readOnly: true
+
+    PortfolioHistoryValue:
+      type: object
+      description: Portfolio history object
+      properties:
+        date:
+          type: string
+          format: date
+          description: History entry date
+        value:
+          type: integer
+
+    PortfolioSummary:
+      type: object
+      description: Portfolio statistics object
+      required:
+        - subscriptions
+        - redemptions
+      properties:
+        subscriptions:
+          type: integer
+          format: int64
+          description: Subscriptions in cents
+          readOnly: true
+        redemptions:
+          type: integer
+          format: int64
+          description: Redemptions in cents
+          readOnly: true
