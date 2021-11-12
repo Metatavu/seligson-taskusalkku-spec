@@ -4,7 +4,7 @@ info:
   title: Taskusalkku API-spec
 
 security:
-  - bearerAuth: []
+  - bearer: []
 
 paths:
   /v1/system/ping:
@@ -189,7 +189,7 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth:
+    bearer:
       type: http
       scheme: bearer
       bearerFormat: JWT
