@@ -4,7 +4,7 @@ info:
   title: Taskusalkku API-spec
 
 security:
-  - bearerAuth: []
+  - bearer: []
 
 paths:
   /v1/system/ping:
@@ -377,7 +377,7 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth:
+    bearer:
       type: http
       scheme: bearer
       bearerFormat: JWT
@@ -477,35 +477,35 @@ components:
       type: object
       description: Change data object
       properties:
-        1dChange:
+        change1d:
           description: 1 day change
           type: number
           format: double
-        1mChange:
+        change1m:
           description: 1 month change
           type: number
           format: double
-        1yChange:
+        change1y:
           description: 1 year change
           type: number
           format: double
-        3yChange:
+        change3y:
           description: 3 years change
           type: number
           format: double
-        5yChange:
+        change5y:
           description: 5 years change
           type: number
           format: double
-        10yChange:
+        change10y:
           description: 10 years change
           type: number
           format: double
-        15yChange:
+        change15y:
           description: 15 years change
           type: number
           format: double
-        20yChange:
+        change20y:
           description: 20 years change
           type: number
           format: double
