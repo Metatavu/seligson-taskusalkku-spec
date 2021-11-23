@@ -422,6 +422,126 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  "/v1/portfolios/{portfolioId}/transactions":
+    get:
+      operationId: listPortfolioTransactions
+      summary: Lists portfolio transactions
+      description: Returns list of portfolio transactions
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+        - name: type
+          in: query
+          description: Transaction type
+          schema:
+            $ref: "#/components/schemas/TransactionType"
+      responses:
+        "200":
+          description: List of portfolio transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioTransaction"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/transactions/{transactionId}":
+    get:
+      operationId: findPortfolioTransactions
+      summary: Finds portfolio transactions
+      description: Returns found portfolio transaction
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: Portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: transactionId
+          required: true
+          in: path
+          description: Transaction id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found portfolio transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioTransaction"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearer:
@@ -652,3 +772,78 @@ components:
           format: int64
           description: Total value in cents
           readOnly: true
+
+    PortfolioTransaction:
+      type: object
+      description: Portfolio transaction object
+      required:
+        - fundId
+        - type
+        - valueDate
+        - value
+        - shareAmount
+        - marketValue
+        - totalValue
+        - paymentDate
+        - provision
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Portfolio transaction ID in UUID format
+          readOnly: true
+        fundId:
+          type: string
+          format: uuid
+          description: Fund ID
+          readOnly: true
+        targetFundId:
+          type: string
+          format: uuid
+          description: Target fund ID. Only available when transaction type is security
+          readOnly: true
+        type:
+          $ref: "#/components/schemas/TransactionType"
+        valueDate:
+          type: string
+          format: date
+          description: Date of fund value
+          readOnly: true
+        value:
+          type: integer
+          format: int64
+          description: Fund value in cents
+          readOnly: true
+        shareAmount:
+          type: number
+          format: double
+          description: Total share amount
+          readOnly: true
+        marketValue:
+          type: integer
+          format: int64
+          description: Market value in cents
+          readOnly: true
+        totalValue:
+          type: integer
+          format: int64
+          description: Total value in cents
+          readOnly: true
+        paymentDate:
+          type: string
+          format: date
+          description: Date when transaction is completed
+          readOnly: true
+        provision:
+          type: integer
+          format: int64
+          description: Provision price in cents
+          readOnly: true
+
+    TransactionType:
+      type: string
+      description: Transaction type enum
+      enum:
+        - SUBSCRIPTION
+        - REDEMPTION
+        - SECURITY
