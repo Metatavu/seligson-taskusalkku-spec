@@ -186,7 +186,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-                
+
   /v1/portfolios:
     get:
       operationId: listPortfolios
@@ -544,6 +544,94 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /v1/meetingTimes:
+    get:
+      operationId: ListMeetingTimes
+      summary: Lists meeting times
+      description: Returns list of meeting times
+      tags:
+        - Meetings
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: List of meeting times
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MeetingTime"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/meetings:
+    post:
+      operationId: createMeeting
+      summary: Create a meeting.
+      description: Creates a new meeting.
+      tags:
+        - Meetings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Meeting"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created Meeting
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meeting"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearer:
@@ -849,3 +937,76 @@ components:
         - SUBSCRIPTION
         - REDEMPTION
         - SECURITY
+
+    MeetingTime:
+      type: object
+      description: Meeting time object
+      required:
+        - startTime
+        - endTime
+      properties:
+        startTime: 
+          type: string
+          format: date-time
+          description: Start date-time of meeting
+        endTime: 
+          type: string
+          format: date-time
+          description: End date-time of meeting
+
+    Meeting:
+      type: object
+      description: Meeting object
+      required:
+        - type
+        - time
+        - language
+        - participantCount
+        - contact
+      properties:
+        type:
+          $ref: "#/components/schemas/MeetingType"
+        time:
+          type: string
+          format: date-time
+          description: Meeting time
+        language:
+          type: string
+          description: Language in ISO-639-1 format
+        participantCount:
+          type: integer
+          format: int32
+          description: Participant count
+        contact:
+          $ref: "#/components/schemas/MeetingContact"
+        additionalInformation:
+          type: string
+          description: Additional information
+
+    MeetingType:
+      type: string
+      description: Meeting type enum
+      enum:
+        - MEETING
+        - PHONE
+
+    MeetingContact:
+      type: object
+      description: Meeting contact object
+      required:
+        - firstName
+        - lastName
+      properties:
+        firstName:
+          type: string
+          description: First name
+        lastName:
+          type: string
+          description: Last name
+        email:
+          type: string
+          format: email
+          description: Email
+        phone:
+          type: string
+          description: Phone number
