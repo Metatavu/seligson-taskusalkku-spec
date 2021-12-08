@@ -830,7 +830,7 @@ components:
         redemptions:
           type: string
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
-          description: Redemptions in cents
+          description: Redemptions in euros
           readOnly: true
 
     PortfolioFund:
