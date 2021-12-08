@@ -187,6 +187,451 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /v1/portfolios:
+    get:
+      operationId: listPortfolios
+      summary: List portfolios.
+      description: Lists portfolios logged user has access to
+      tags:
+        - Portfolios
+      responses:
+        "200":
+          description: List of portfolios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Portfolio"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}":
+    get:
+      operationId: findPortfolio
+      summary: Find a portfolio.
+      description: Finds a portfolio by id.
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Portfolio
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Portfolio"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/summary":
+    get:
+      operationId: getPortfolioSummary
+      summary: Summary for portfolio summary
+      description: Returns summary a portfolio history for given time range
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          required: true
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: true
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Portfolio
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSummary"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/historyValues":
+    get:
+      operationId: listPortfolioHistoryValues
+      summary: List portfolio history values.
+      description: Lists portfolio history values
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          required: true
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: true
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: List of portfolio history values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioHistoryValue"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/funds":
+    get:
+      operationId: listPortfolioFunds
+      summary: Lists portfolio funds
+      description: Returns list of portfolio funds
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of portfolio funds
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioFund"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/transactions":
+    get:
+      operationId: listPortfolioTransactions
+      summary: Lists portfolio transactions
+      description: Returns list of portfolio transactions
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+        - name: transactionType
+          in: query
+          description: Transaction type
+          schema:
+            $ref: "#/components/schemas/TransactionType"
+      responses:
+        "200":
+          description: List of portfolio transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioTransaction"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/portfolios/{portfolioId}/transactions/{transactionId}":
+    get:
+      operationId: findPortfolioTransactions
+      summary: Finds portfolio transactions
+      description: Returns found portfolio transaction
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolioId
+          required: true
+          in: path
+          description: Portfolio id
+          schema:
+            type: string
+            format: uuid
+        - name: transactionId
+          required: true
+          in: path
+          description: Transaction id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found portfolio transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioTransaction"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/meetingTimes:
+    get:
+      operationId: ListMeetingTimes
+      summary: Lists meeting times
+      description: Returns list of meeting times
+      tags:
+        - Meetings
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for the date range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the date range
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: List of meeting times
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MeetingTime"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/meetings:
+    post:
+      operationId: createMeeting
+      summary: Create a meeting.
+      description: Creates a new meeting.
+      tags:
+        - Meetings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Meeting"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created Meeting
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Meeting"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearer:
@@ -334,3 +779,234 @@ components:
           description: Historical value
           type: number
           format: double
+
+    Portfolio:
+      type: object
+      description: Portfolio object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        totalAmount:
+          type: number
+          format: double
+          description: Total amount in cents
+          readOnly: true
+        marketValueTotal:
+          type: number
+          format: double
+          description: Market total amount in cents
+          readOnly: true
+        purchaseTotal:
+          type: number
+          format: double
+          description: Purchase total amount in cents
+          readOnly: true
+
+    PortfolioHistoryValue:
+      type: object
+      description: Portfolio history object
+      properties:
+        date:
+          type: string
+          format: date
+          description: History entry date
+        value:
+          type: integer
+
+    PortfolioSummary:
+      type: object
+      description: Portfolio statistics object
+      required:
+        - subscriptions
+        - redemptions
+      properties:
+        subscriptions:
+          type: integer
+          format: int64
+          description: Subscriptions in cents
+          readOnly: true
+        redemptions:
+          type: integer
+          format: int64
+          description: Redemptions in cents
+          readOnly: true
+
+    PortfolioFund:
+      type: object
+      description: Portfolio fund object
+      required:
+        - id
+        - amount
+        - purchaseValue
+        - totalValue
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Fund ID. Can be used to search fund details.
+          readOnly: true
+        amount:
+          type: number
+          format: double
+          description: Amount of funds
+          readOnly: true
+        purchaseValue:
+          type: integer
+          format: int64
+          description: Purchase value in cents
+          readOnly: true
+        totalValue:
+          type: integer
+          format: int64
+          description: Total value in cents
+          readOnly: true
+
+    PortfolioTransaction:
+      type: object
+      description: Portfolio transaction object
+      required:
+        - fundId
+        - transactionType
+        - valueDate
+        - value
+        - shareAmount
+        - marketValue
+        - totalValue
+        - paymentDate
+        - provision
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Portfolio transaction ID in UUID format
+          readOnly: true
+        fundId:
+          type: string
+          format: uuid
+          description: Fund ID
+          readOnly: true
+        targetFundId:
+          type: string
+          format: uuid
+          description: Target fund ID. Only available when transaction type is security
+          readOnly: true
+        transactionType:
+          $ref: "#/components/schemas/TransactionType"
+        valueDate:
+          type: string
+          format: date
+          description: Date of fund value
+          readOnly: true
+        value:
+          type: integer
+          format: int64
+          description: Fund value in cents
+          readOnly: true
+        shareAmount:
+          type: number
+          format: double
+          description: Total share amount
+          readOnly: true
+        marketValue:
+          type: integer
+          format: int64
+          description: Market value in cents
+          readOnly: true
+        totalValue:
+          type: integer
+          format: int64
+          description: Total value in cents
+          readOnly: true
+        paymentDate:
+          type: string
+          format: date
+          description: Date when transaction is completed
+          readOnly: true
+        provision:
+          type: integer
+          format: int64
+          description: Provision price in cents
+          readOnly: true
+
+    TransactionType:
+      type: string
+      description: Transaction type enum
+      enum:
+        - SUBSCRIPTION
+        - REDEMPTION
+        - SECURITY
+
+    MeetingTime:
+      type: object
+      description: Meeting time object
+      required:
+        - startTime
+        - endTime
+      properties:
+        startTime:
+          type: string
+          format: date-time
+          description: Start date-time of meeting
+        endTime:
+          type: string
+          format: date-time
+          description: End date-time of meeting
+
+    Meeting:
+      type: object
+      description: Meeting object
+      required:
+        - type
+        - time
+        - language
+        - participantCount
+        - contact
+      properties:
+        type:
+          $ref: "#/components/schemas/MeetingType"
+        time:
+          type: string
+          format: date-time
+          description: Meeting time
+        language:
+          type: string
+          description: Language in ISO-639-1 format
+        participantCount:
+          type: integer
+          format: int32
+          description: Participant count
+        contact:
+          $ref: "#/components/schemas/MeetingContact"
+        additionalInformation:
+          type: string
+          description: Additional information
+
+    MeetingType:
+      type: string
+      description: Meeting type enum
+      enum:
+        - MEETING
+        - PHONE
+
+    MeetingContact:
+      type: object
+      description: Meeting contact object
+      required:
+        - firstName
+        - lastName
+      properties:
+        firstName:
+          type: string
+          description: First name
+        lastName:
+          type: string
+          description: Last name
+        email:
+          type: string
+          format: email
+          description: Email
+        phone:
+          type: string
+          description: Phone number
