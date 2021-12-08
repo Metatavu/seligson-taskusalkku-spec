@@ -789,18 +789,18 @@ components:
           format: uuid
           readOnly: true
         totalAmount:
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Total amount in cents
           readOnly: true
         marketValueTotal:
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Market total amount in cents
           readOnly: true
         purchaseTotal:
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Purchase total amount in cents
           readOnly: true
 
@@ -823,13 +823,13 @@ components:
         - redemptions
       properties:
         subscriptions:
-          type: integer
-          format: int64
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Subscriptions in cents
           readOnly: true
         redemptions:
-          type: integer
-          format: int64
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Redemptions in cents
           readOnly: true
 
