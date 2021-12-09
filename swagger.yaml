@@ -791,7 +791,7 @@ components:
         totalAmount:
           type: string
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
-          description: Total amount in cents
+          description: Total amount in euros
           readOnly: true
         marketValueTotal:
           type: string
