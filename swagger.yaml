@@ -492,8 +492,8 @@ paths:
 
   "/v1/portfolios/{portfolioId}/transactions/{transactionId}":
     get:
-      operationId: findPortfolioTransactions
-      summary: Finds portfolio transactions
+      operationId: findPortfolioTransaction
+      summary: Finds portfolio transaction
       description: Returns found portfolio transaction
       tags:
         - Portfolios
