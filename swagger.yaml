@@ -882,15 +882,15 @@ components:
           format: uuid
           description: Portfolio transaction ID in UUID format
           readOnly: true
-        fundId:
+        securityId:
           type: string
           format: uuid
-          description: Fund ID
+          description: Security ID
           readOnly: true
-        targetFundId:
+        targetSecurityId:
           type: string
           format: uuid
-          description: Target fund ID. Only available when transaction type is security
+          description: Target security ID. Only available when transaction type is security
           readOnly: true
         transactionType:
           $ref: "#/components/schemas/TransactionType"
@@ -900,24 +900,24 @@ components:
           description: Date of fund value
           readOnly: true
         value:
-          type: integer
-          format: int64
-          description: Fund value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Fund value in euros
           readOnly: true
         shareAmount:
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Total share amount
           readOnly: true
         marketValue:
-          type: integer
-          format: int64
-          description: Market value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Market value in euros
           readOnly: true
         totalValue:
-          type: integer
-          format: int64
-          description: Total value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Total value in euros
           readOnly: true
         paymentDate:
           type: string
@@ -925,9 +925,9 @@ components:
           description: Date when transaction is completed
           readOnly: true
         provision:
-          type: integer
-          format: int64
-          description: Provision price in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Provision price in euros
           readOnly: true
 
     TransactionType:
