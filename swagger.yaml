@@ -874,7 +874,6 @@ components:
         - shareAmount
         - marketValue
         - totalValue
-        - paymentDate
         - provision
       properties:
         id:
