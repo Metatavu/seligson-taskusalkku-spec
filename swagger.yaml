@@ -375,9 +375,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  "/v1/portfolios/{portfolioId}/funds":
+  "/v1/portfolios/{portfolioId}/securities":
     get:
-      operationId: listPortfolioFunds
+      operationId: listPortfolioSecurities
       summary: Lists portfolio funds
       description: Returns list of portfolio funds
       tags:
@@ -392,13 +392,13 @@ paths:
             format: uuid
       responses:
         "200":
-          description: List of portfolio funds
+          description: List of portfolio securities
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/PortfolioFund"
+                  $ref: "#/components/schemas/PortfolioSecurity"
         "400":
           description: Invalid request was sent to the server
           content:
@@ -492,8 +492,8 @@ paths:
 
   "/v1/portfolios/{portfolioId}/transactions/{transactionId}":
     get:
-      operationId: findPortfolioTransactions
-      summary: Finds portfolio transactions
+      operationId: findPortfolioTransaction
+      summary: Finds portfolio transaction
       description: Returns found portfolio transaction
       tags:
         - Portfolios
@@ -813,7 +813,10 @@ components:
           format: date
           description: History entry date
         value:
-          type: integer
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: History entry value in euros
+          readOnly: true
 
     PortfolioSummary:
       type: object
@@ -833,7 +836,7 @@ components:
           description: Redemptions in euros
           readOnly: true
 
-    PortfolioFund:
+    PortfolioSecurity:
       type: object
       description: Portfolio fund object
       required:
@@ -848,19 +851,19 @@ components:
           description: Fund ID. Can be used to search fund details.
           readOnly: true
         amount:
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Amount of funds
           readOnly: true
         purchaseValue:
-          type: integer
-          format: int64
-          description: Purchase value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Purchase value in euros
           readOnly: true
         totalValue:
-          type: integer
-          format: int64
-          description: Total value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Total value in euros
           readOnly: true
 
     PortfolioTransaction:
@@ -874,7 +877,6 @@ components:
         - shareAmount
         - marketValue
         - totalValue
-        - paymentDate
         - provision
       properties:
         id:
@@ -882,15 +884,15 @@ components:
           format: uuid
           description: Portfolio transaction ID in UUID format
           readOnly: true
-        fundId:
+        securityId:
           type: string
           format: uuid
-          description: Fund ID
+          description: Security ID
           readOnly: true
-        targetFundId:
+        targetSecurityId:
           type: string
           format: uuid
-          description: Target fund ID. Only available when transaction type is security
+          description: Target security ID. Only available when transaction type is security
           readOnly: true
         transactionType:
           $ref: "#/components/schemas/TransactionType"
@@ -900,24 +902,24 @@ components:
           description: Date of fund value
           readOnly: true
         value:
-          type: integer
-          format: int64
-          description: Fund value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Fund value in euros
           readOnly: true
         shareAmount:
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Total share amount
           readOnly: true
         marketValue:
-          type: integer
-          format: int64
-          description: Market value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Market value in euros
           readOnly: true
         totalValue:
-          type: integer
-          format: int64
-          description: Total value in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Total value in euros
           readOnly: true
         paymentDate:
           type: string
@@ -925,9 +927,9 @@ components:
           description: Date when transaction is completed
           readOnly: true
         provision:
-          type: integer
-          format: int64
-          description: Provision price in cents
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: Provision price in euros
           readOnly: true
 
     TransactionType:
