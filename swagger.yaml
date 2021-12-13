@@ -116,11 +116,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  "/v1/funds/{fundId}/historicalValues":
+  "/v1/funds/{fundId}/historyValues":
     get:
-      operationId: listHistoricalValues
-      summary: Lists historical values
-      description: Lists historical values
+      operationId: listFundHistoryValues
+      summary: Lists fund history values
+      description: Lists fund history values
       tags:
         - Funds
       parameters:
@@ -155,13 +155,13 @@ paths:
             format: date
       responses:
         "200":
-          description: List of historical values
+          description: List of fund history values
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/HistoricalValue"
+                  $ref: "#/components/schemas/FundHistoryValue"
           headers:
             X-Total-Count:
               schema:
