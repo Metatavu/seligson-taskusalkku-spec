@@ -116,11 +116,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  "/v1/funds/{fundId}/historicalValues":
+  "/v1/funds/{fundId}/historyValues":
     get:
-      operationId: listHistoricalValues
-      summary: Lists historical values
-      description: Lists historical values
+      operationId: listFundHistoryValues
+      summary: Lists fund history values
+      description: Lists fund history values
       tags:
         - Funds
       parameters:
@@ -155,19 +155,112 @@ paths:
             format: date
       responses:
         "200":
-          description: List of historical values
+          description: List of fund history values
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/HistoricalValue"
+                  $ref: "#/components/schemas/FundHistoryValue"
           headers:
             X-Total-Count:
               schema:
                 type: integer
                 format: int64
               description: Total count of funds with given filters.
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/securities:
+    get:
+      operationId: listSecurities
+      summary: List securities.
+      description: Lists securities.
+      tags:
+        - Securities
+      parameters:
+        - name: firstResult
+          in: query
+          description: First result. Defaults to 0
+          schema:
+            type: integer
+        - name: maxResults
+          in: query
+          description: Max results. Defaults to 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of securities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Security"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of securities with given filters.
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/securities/{securityId}":
+    get:
+      operationId: findSecurity
+      summary: Find a security.
+      description: Finds a security by id.
+      tags:
+        - Securities
+      parameters:
+        - name: securityId
+          required: true
+          in: path
+          description: security id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Security
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Security"
         "400":
           description: Invalid request was sent to the server
           content:
@@ -681,18 +774,18 @@ components:
           description: Price date
         aShareValue:
           description: Share value A
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         bShareValue:
           description: Share value B
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         changeData:
           $ref: "#/components/schemas/ChangeData"
         profitProjection:
           description: Profit projection
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         profitProjectionDate:
           description: Profit projection date
           type: string
@@ -736,49 +829,50 @@ components:
       properties:
         change1d:
           description: 1 day change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change1m:
           description: 1 month change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change1y:
           description: 1 year change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change3y:
           description: 3 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change5y:
           description: 5 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change10y:
           description: 10 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change15y:
           description: 15 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change20y:
           description: 20 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
 
-    HistoricalValue:
+    FundHistoryValue:
       type: object
-      description: Historical value object
+      description: Fund history value object
       properties:
         date:
-          description: Date of historical value
           type: string
           format: date
+          description: History entry date
         value:
-          description: Historical value
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
+          description: History entry value in euros
+          readOnly: true
 
     Portfolio:
       type: object
@@ -806,7 +900,7 @@ components:
 
     PortfolioHistoryValue:
       type: object
-      description: Portfolio history object
+      description: Portfolio history value object
       properties:
         date:
           type: string
@@ -848,7 +942,7 @@ components:
         id:
           type: string
           format: uuid
-          description: Fund ID. Can be used to search fund details.
+          description: security ID. Can be used to search security details.
           readOnly: true
         amount:
           type: string
@@ -931,6 +1025,28 @@ components:
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Provision price in euros
           readOnly: true
+
+    Security:
+      type: object
+      description: Security object
+      required:
+        - name
+        - currency
+        - fundId
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Security ID
+        fundId:
+          type: string
+          format: uuid
+          description: Fund ID
+        name:
+          $ref: "#/components/schemas/LocalizedValue"
+        currency:
+          type: string
+          description: string
 
     TransactionType:
       type: string
