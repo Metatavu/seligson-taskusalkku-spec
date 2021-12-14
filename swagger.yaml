@@ -774,18 +774,18 @@ components:
           description: Price date
         aShareValue:
           description: Share value A
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         bShareValue:
           description: Share value B
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         changeData:
           $ref: "#/components/schemas/ChangeData"
         profitProjection:
           description: Profit projection
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         profitProjectionDate:
           description: Profit projection date
           type: string
@@ -829,36 +829,36 @@ components:
       properties:
         change1d:
           description: 1 day change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change1m:
           description: 1 month change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change1y:
           description: 1 year change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change3y:
           description: 3 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change5y:
           description: 5 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change10y:
           description: 10 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change15y:
           description: 15 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
         change20y:
           description: 20 years change
-          type: number
-          format: double
+          type: string
+          pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
 
     FundHistoryValue:
       type: object
