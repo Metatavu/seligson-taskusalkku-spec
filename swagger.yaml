@@ -877,11 +877,15 @@ components:
     Portfolio:
       type: object
       description: Portfolio object
+      required:
+        - name
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
+        name:
+          type: string
         totalAmount:
           type: string
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
