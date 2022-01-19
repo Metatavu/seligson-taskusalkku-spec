@@ -116,77 +116,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  "/v1/funds/{fundId}/historyValues":
-    get:
-      operationId: listFundHistoryValues
-      summary: Lists fund history values
-      description: Lists fund history values
-      tags:
-        - Funds
-      parameters:
-        - name: fundId
-          required: true
-          in: path
-          description: fund id
-          schema:
-            type: string
-            format: uuid
-        - name: firstResult
-          in: query
-          description: First result. Defaults to 0
-          schema:
-            type: integer
-        - name: maxResults
-          in: query
-          description: Max results. Defaults to 10
-          schema:
-            type: integer
-        - name: startDate
-          in: query
-          description: Filter starting from this date
-          schema:
-            type: string
-            format: date
-        - name: endDate
-          in: query
-          description: Filter ending to this date
-          schema:
-            type: string
-            format: date
-      responses:
-        "200":
-          description: List of fund history values
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/FundHistoryValue"
-          headers:
-            X-Total-Count:
-              schema:
-                type: integer
-                format: int64
-              description: Total count of funds with given filters.
-        "400":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
   /v1/securities:
     get:
       operationId: listSecurities
@@ -261,6 +190,77 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Security"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/securities/{securityId}/historyValues":
+    get:
+      operationId: listSecurityHistoryValues
+      summary: Lists security history values
+      description: Lists security history values
+      tags:
+        - Securities
+      parameters:
+        - name: securityId
+          required: true
+          in: path
+          description: security id
+          schema:
+            type: string
+            format: uuid
+        - name: firstResult
+          in: query
+          description: First result. Defaults to 0
+          schema:
+            type: integer
+        - name: maxResults
+          in: query
+          description: Max results. Defaults to 10
+          schema:
+            type: integer
+        - name: startDate
+          in: query
+          description: Filter starting from this date
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Filter ending to this date
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: List of security history values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SecurityHistoryValue"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of funds with given filters.
         "400":
           description: Invalid request was sent to the server
           content:
@@ -860,9 +860,9 @@ components:
           type: string
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
 
-    FundHistoryValue:
+    SecurityHistoryValue:
       type: object
-      description: Fund history value object
+      description: Security history value object
       properties:
         date:
           type: string
