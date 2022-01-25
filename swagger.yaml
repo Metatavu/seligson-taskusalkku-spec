@@ -904,11 +904,11 @@ components:
         aReference:
           description: Reference value A
           readOnly: true
-          pattern: /^\d{12,27}$
+          pattern: /^[0-9]{12,27}$
         bReference:
           description: Reference value B
           readOnly: true
-          pattern: /^\d{12,27}$
+          pattern: /^[0-9]{12,27}$
 
     PortfolioHistoryValue:
       type: object
