@@ -902,10 +902,12 @@ components:
           description: Purchase total amount in euros
           readOnly: true
         aReference:
+          type: string
           pattern: /^[0-9]{12,27}$
           description: Reference value A
           readOnly: true
         bReference:
+          type: string
           pattern: /^[0-9]{12,27}$
           description: Reference value B
           readOnly: true
