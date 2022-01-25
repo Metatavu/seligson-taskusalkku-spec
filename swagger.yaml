@@ -901,6 +901,14 @@ components:
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Purchase total amount in euros
           readOnly: true
+        aReference:
+          description: Reference value A
+          readOnly: true
+          pattern: /^\d{12,27}$
+        bReference:
+          description: Reference value B
+          readOnly: true
+          pattern: /^\d{12,27}$
 
     PortfolioHistoryValue:
       type: object
