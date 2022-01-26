@@ -125,11 +125,11 @@ paths:
         - Securities
       parameters:
         - name: seriesId
-            in: query
-            description: Series id.
-            schema:
-              type: integer
-              format: int32
+          in: query
+          description: Series id.
+          schema:
+            type: integer
+            format: int32
         - name: firstResult
           in: query
           description: First result. Defaults to 0
