@@ -124,6 +124,12 @@ paths:
       tags:
         - Securities
       parameters:
+        - name: seriesId
+          in: query
+          description: Series id.
+          schema:
+            type: integer
+            format: int32
         - name: firstResult
           in: query
           description: First result. Defaults to 0
@@ -799,6 +805,28 @@ components:
           format: int32
         KIID:
           $ref: "#/components/schemas/LocalizedValue"
+        subscriptionBankAccount:
+          $ref: "#/components/schemas/SubscriptionBankAccount"
+
+    SubscriptionBankAccount:
+          type: object
+          description: Subscription Bank Account object
+          properties:
+            BankAccountName:
+              description: Bank account name
+              type: string
+            IBAN:
+              description: IBAN
+              type: string
+            AccountNumberOldFormat:
+              description: account number old format
+              type: string
+            BIC:
+              description: BIC
+              type: string
+            Currency:
+              description: Currency
+              type: string
 
     LocalizedValue:
       type: object
