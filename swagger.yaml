@@ -808,7 +808,8 @@ components:
         subscriptionBankAccounts:
           description: Subscription bank accounts
           type: array
-          $ref: "#/components/schemas/SubscriptionBankAccount"
+          items:
+            $ref: "#/components/schemas/SubscriptionBankAccount"
 
     SubscriptionBankAccount:
           type: object
