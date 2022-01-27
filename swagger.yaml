@@ -805,7 +805,9 @@ components:
           format: int32
         KIID:
           $ref: "#/components/schemas/LocalizedValue"
-        subscriptionBankAccount:
+        subscriptionBankAccounts:
+          description: Subscription bank accounts
+          type: array
           $ref: "#/components/schemas/SubscriptionBankAccount"
 
     SubscriptionBankAccount:
