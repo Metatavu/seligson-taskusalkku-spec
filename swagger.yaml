@@ -816,6 +816,9 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SubscriptionBankAccount"
+        subscribable:
+          type: boolean
+          description: subscribable
 
     SubscriptionBankAccount:
           type: object
