@@ -851,6 +851,8 @@ components:
           type: string
         sv:
           type: string
+        en:
+          type: string
 
     FundGroup:
       type: string
