@@ -762,7 +762,8 @@ components:
       type: object
       description: Fund object
       required:
-        - name
+        - longName
+        - shortName
       properties:
         id:
           type: string
