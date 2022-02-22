@@ -762,22 +762,18 @@ components:
       type: object
       description: Fund object
       required:
-        - name
+        - longName
+        - shortName
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
           description: Fund object id in UUID format
-        name:
-          $ref: "#/components/schemas/LocalizedValue"
         longName:
           $ref: "#/components/schemas/LocalizedValue"
         shortName:
           $ref: "#/components/schemas/LocalizedValue"
-        bankReceiverName:
-          type: string
-          description: Bank receiver name
         group:
           $ref: "#/components/schemas/FundGroup"
         priceDate:
