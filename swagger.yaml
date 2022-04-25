@@ -292,6 +292,47 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  "/v1/companies/{companyId}":
+    get:
+      operationId: findCompany
+      summary: Find a company.
+      description: Finds a company by id.
+      tags:
+        - Companies
+      parameters:
+        - name: companyId
+          required: true
+          in: path
+          description: company id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /v1/portfolios:
     get:
       operationId: listPortfolios
@@ -912,11 +953,12 @@ components:
           description: History entry value in euros
           readOnly: true
 
-    Portfolio:
+    Company:
       type: object
-      description: Portfolio object
+      description: Company object
       required:
         - name
+        - accessLevel
       properties:
         id:
           type: string
@@ -924,6 +966,34 @@ components:
           readOnly: true
         name:
           type: string
+        accessLevel:
+          $ref: "#/components/schemas/CompanyAccessLevel"
+
+    CompanyAccessLevel:
+      type: string
+      enum:
+        - OWNED
+        - SHARED
+
+    Portfolio:
+      type: object
+      description: Portfolio object
+      required:
+        - name
+        - accessLevel
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        companyId:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        accessLevel:
+          $ref: "#/components/schemas/CompanyAccessLevel"
         totalAmount:
           type: string
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
@@ -949,6 +1019,7 @@ components:
           pattern: /^[0-9]{12,27}$
           description: Reference value B
           readOnly: true
+
     PortfolioHistoryValue:
       type: object
       description: Portfolio history value object
