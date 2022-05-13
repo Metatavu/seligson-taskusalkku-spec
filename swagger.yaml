@@ -375,6 +375,14 @@ paths:
       description: Lists portfolios logged user has access to
       tags:
         - Portfolios
+      parameters:
+        - name: companyId
+          required: false
+          in: query
+          description: company id
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: List of portfolios
