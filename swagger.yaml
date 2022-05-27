@@ -1124,6 +1124,11 @@ components:
           pattern: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/
           description: Total value in euros
           readOnly: true
+        rateDate:
+          type: string
+          format: date
+          description: Rate date
+          readOnly: true
 
     PortfolioTransaction:
       type: object
