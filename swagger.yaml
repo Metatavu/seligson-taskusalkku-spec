@@ -375,6 +375,41 @@ paths:
       description: Lists portfolios logged user has access to
       tags:
         - Portfolios
+      responses:
+        "200":
+          description: List of portfolios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Portfolio"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v2/portfolios:
+    get:
+      operationId: listPortfoliosV2
+      summary: List portfolios.
+      description: Lists portfolios logged user has access to
+      tags:
+        - Portfolios
       parameters:
         - name: companyId
           required: false
